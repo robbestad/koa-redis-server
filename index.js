@@ -11,7 +11,7 @@ const Redis = require('koa-simple-redis');
 const client = new Redis({
   url: 'redis://127.0.0.1:6379',
 });
-const PORT = 8080;
+const PORT = 8666;
 require('colors');
 
 const logger = require('debug');
