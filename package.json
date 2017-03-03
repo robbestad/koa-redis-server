@@ -1,0 +1,27 @@
+{
+  "name": "koa-redis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "co-body": "^5.0.0",
+    "colors": "^1.1.2",
+    "debug": "^2.6.1",
+    "koa": "2.x",
+    "koa-better-body": "^3.0.2",
+    "koa-compress": "next",
+    "koa-convert": "^1.2.0",
+    "koa-favicon": "^2.0.0",
+    "koa-router": "^7.1.0",
+    "koa-send": "^3.3.0",
+    "koa-simple-redis": "^1.0.2",
+    "koa-static": "^2.1.0",
+    "koa-static-cache": "^3.2.0"
+  }
+}
