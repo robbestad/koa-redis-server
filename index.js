@@ -30,38 +30,32 @@ const validateHash = async(ctx, next) => {
 };
 
 router
-  .get('/content',
-    validateHash,
-    async ctx => {
-      ctx.body = await new Promise((resolve, reject) => {
-        client.get(redisKey)
-          .then(data => {
-            resolve(data);
-          })
-          .catch(err => {
-            reject(err);
-          })
-      })
-    }
-  )
-  .put('/content',
+  .get('/data/:key',
     validateHash,
     (async(ctx, next) => {
       await new Promise((resolve, reject) => {
-        const json = parse.json(ctx).then(json => {
-          client.set(redisKey,
-            {"data": JSON.stringify(json)}, 10e10)
-            .then(res => {
-              ctx.body = res;
-              ctx.status = 201;
-              resolve();
-            })
-            .catch(err => {
-              ctx.status = 500;
-              reject();
-            })
+        const {key} = ctx.params;
+        if (!key) {
+          reject({statusCode: 412, message: "No key in request"});
+        }
+        client.get(key)
+          .then(res => {
+            resolve({statusCode: 200, message: res});
+          })
+          .catch(err => {
+            reject({statusCode: 500, message: err});
+          })
+      })
+        .then(res => {
+          ctx.status = res.statusCode;
+          ctx.body = res.message
         })
-      });
+        .catch(err => {
+          ctx.status = err.statusCode || err.status || 500;
+          ctx.body = {
+            message: err.message
+          };
+        })
     }))
   .put('/data',
     validateHash,
@@ -73,10 +67,10 @@ router
             reject({statusCode: 412, message: "No key or value present in body"});
           }
           client.set(key,
-            {"data": JSON.stringify(value)}, 10e10)
+            {"data": value}, 10e10)
             .then(res => {
               ctx.body = res;
-              resolve({statusCode: 201, message: "OK"});
+              resolve({statusCode: 201, message: "PUT SUCCESSFUL"});
             })
             .catch(err => {
               reject({statusCode: 418, message: "I'm sorry Dave, I'm afraid I can't do that (" + err + ")"});
