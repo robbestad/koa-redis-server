@@ -17,8 +17,6 @@ require('colors');
 
 const logger = require('debug');
 
-const redisKey = 'content';
-
 const validateHash = async(ctx, next) => {
   const {hash, phrase} = ctx.req.headers;
   const controlHash = crypto.createHash('sha256').update(require('./secret.json') + phrase).digest('base64');
